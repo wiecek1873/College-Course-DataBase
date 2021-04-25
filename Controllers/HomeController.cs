@@ -41,16 +41,111 @@ namespace Bazadanych.Controllers
 			if (ModelState.IsValid)
 			{
 				ModelContext modelContext = new ModelContext();
-				User newUser = new User();
-				newUser.Userid = 1;
-				newUser.Firstname = model.FirstName;
-				newUser.Lastname = model.LastName;
-				newUser.Emailadress = model.EmailAddress;
-				modelContext.Users.Add(newUser);
+				decimal userID = 0;
+				foreach (User user in modelContext.Users)
+				{
+					if (user.Emailadress == model.EmailAddress)
+						return Error();
+					userID++;
+				}
+
+				modelContext.Users.Add(new User
+				{
+					Userid = userID,
+					Firstname = model.FirstName,
+					Lastname = model.LastName,
+					Emailadress = model.EmailAddress
+				});
+
 				modelContext.SaveChanges();
+				modelContext.Dispose();
 				return RedirectToAction("Index");
 			}
 			return View();
+		}
+
+		public ActionResult CreateTopic()
+		{
+			ViewBag.Message = "Create topic";
+
+			return View();
+		}
+
+		[HttpPost]
+		public ActionResult CreateTopic(TopicModel model)
+		{
+			if (ModelState.IsValid)
+			{
+				ModelContext modelContext = new ModelContext();
+				decimal topicID = 0;
+				decimal voteTimeID = 0;
+				decimal optionID = 0;
+
+				foreach(Votetime votetime in modelContext.Votetimes)
+				{
+					voteTimeID++;
+				}
+
+				modelContext.Votetimes.Add(new Votetime
+				{
+					Votetimeid = voteTimeID,
+					Votestarttime = model.VoteStart,
+					Votestoptime = model.VoteEnd
+				});
+
+				foreach(Option option in modelContext.Options)
+				{
+					optionID++;
+				}
+
+				modelContext.Options.Add(new Option
+				{
+					Optionid = optionID,
+					Optiongroupid = 1, //TODO sparametryzować
+					Information = "elo", //TODO sparametyzować
+					Votes = 0
+				});
+
+				//foreach (Votetopic votetopic in modelContext.Votetopics)
+				//{
+				//	topicID++;
+				//}
+
+				//modelContext.Votetopics.Add(new Votetopic
+				//{
+				//	Votetopicid = topicID,
+				//	Maininformation = model.Maininformation,
+				//	Votetimeid = voteTimeID,
+				//	Optiongroupid = optionGroupID
+				//});
+
+				modelContext.SaveChanges();
+				modelContext.Dispose();
+				return RedirectToAction("Index");
+			}
+			return View();
+		}
+
+		public ActionResult ViewTopics()
+		{
+			ModelContext modelContext = new ModelContext();
+			ViewBag.Message = "Topics List";
+
+			var data = modelContext.Votetopics.ToList();
+			List<TopicModel> allTopics = new List<TopicModel>();
+
+			foreach (var votetopic in data)
+			{
+				allTopics.Add(new TopicModel
+				{
+					VoteTopicID = (int)votetopic.Votetopicid,
+					Maininformation = votetopic.Maininformation,
+				});
+			}
+
+			allTopics = allTopics.OrderBy(x => x.VoteTopicID).ToList();
+
+			return View(allTopics);
 		}
 
 		//public string Test()

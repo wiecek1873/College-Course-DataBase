@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Bazadanych.Models.TopicModel>
+
+@{
+    ViewData["Title"] = "ViewTopics";
+}
+
+<h1>ViewTopics</h1>
+
+<p>
+    <a asp-action="CreateTopic">Create new topic!</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.VoteTopicID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Maininformation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VoteStart)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VoteEnd)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Option)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.VoteTopicID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Maininformation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VoteStart)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VoteEnd)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Option.Information)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
