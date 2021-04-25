@@ -28,12 +28,37 @@ namespace Bazadanych.Controllers
 			return View();
 		}
 
-		public string Test()
+		public IActionResult SignUp()
 		{
-			ModelContext xd = new ModelContext();
-			var xdd = xd.Users.Where(x => x.Userid == 0).First().Userid.ToString();
-			return xdd;
+			ViewBag.Message = "User sign up";
+
+			return View();
 		}
+
+		[HttpPost]
+		public IActionResult SignUp(UserModel model)
+		{
+			if (ModelState.IsValid)
+			{
+				ModelContext modelContext = new ModelContext();
+				User newUser = new User();
+				newUser.Userid = 1;
+				newUser.Firstname = model.FirstName;
+				newUser.Lastname = model.LastName;
+				newUser.Emailadress = model.EmailAddress;
+				modelContext.Users.Add(newUser);
+				modelContext.SaveChanges();
+				return RedirectToAction("Index");
+			}
+			return View();
+		}
+
+		//public string Test()
+		//{
+		//	ModelContext xd = new ModelContext();
+		//	var xdd = xd.Users.Where(x => x.Userid == 0).First().Userid.ToString();
+		//	return xdd;
+		//}
 
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()

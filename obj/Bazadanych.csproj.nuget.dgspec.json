@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\wiece\\Desktop\\Sem6\\BD\\PodejścieDrugie\\Bazadanych\\Bazadanych.csproj": {}
+    "C:\\Users\\wiece\\Desktop\\Sem6\\BD\\Program\\Bazadanych.csproj": {}
   },
   "projects": {
-    "C:\\Users\\wiece\\Desktop\\Sem6\\BD\\PodejścieDrugie\\Bazadanych\\Bazadanych.csproj": {
+    "C:\\Users\\wiece\\Desktop\\Sem6\\BD\\Program\\Bazadanych.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\wiece\\Desktop\\Sem6\\BD\\PodejścieDrugie\\Bazadanych\\Bazadanych.csproj",
+        "projectUniqueName": "C:\\Users\\wiece\\Desktop\\Sem6\\BD\\Program\\Bazadanych.csproj",
         "projectName": "Bazadanych",
-        "projectPath": "C:\\Users\\wiece\\Desktop\\Sem6\\BD\\PodejścieDrugie\\Bazadanych\\Bazadanych.csproj",
+        "projectPath": "C:\\Users\\wiece\\Desktop\\Sem6\\BD\\Program\\Bazadanych.csproj",
         "packagesPath": "C:\\Users\\wiece\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\wiece\\Desktop\\Sem6\\BD\\PodejścieDrugie\\Bazadanych\\obj\\",
+        "outputPath": "C:\\Users\\wiece\\Desktop\\Sem6\\BD\\Program\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\wiece\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -40,6 +40,10 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[5.0.2, )"
+            },
             "Oracle.EntityFrameworkCore": {
               "target": "Package",
               "version": "[5.21.1, )"
