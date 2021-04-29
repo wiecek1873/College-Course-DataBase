@@ -34,30 +34,31 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.VoteTopicID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Maininformation)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.VoteStart)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.VoteEnd)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OptionA.Information)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OptionB.Information)
-            </td>
-            <td>
-                @Html.ActionLink("Vote", "VoteTopic", new {  id=item.VoteTopicID })
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VoteTopicID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Maininformation)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VoteStart)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VoteEnd)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OptionA.Information)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OptionB.Information)
+                </td>
+                <td>
+                    @Html.ActionLink("Vote", "VoteTopic", new { id = item.VoteTopicID })
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

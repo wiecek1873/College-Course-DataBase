@@ -1,4 +1,4 @@
-﻿@model Bazadanych.Models.TopicModel
+﻿@model Bazadanych.Models.CreateTopicModel
 
 @{
     ViewData["Title"] = "CreateTopic";
@@ -13,33 +13,53 @@
         <form asp-action="CreateTopic">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Maininformation" class="control-label"></label>
-                <input asp-for="Maininformation" class="form-control" />
-                <span asp-validation-for="Maininformation" class="text-danger"></span>
+                <label asp-for="topicModel.Maininformation" class="control-label"></label>
+                <input asp-for="topicModel.Maininformation" class="form-control" />
+                <span asp-validation-for="topicModel.Maininformation" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="VoteStart" class="control-label"></label>
-                <input asp-for="VoteStart" class="form-control" />
-                <span asp-validation-for="VoteStart" class="text-danger"></span>
+                <label asp-for="topicModel.VoteStart" class="control-label"></label>
+                <input asp-for="topicModel.VoteStart" class="form-control" />
+                <span asp-validation-for="topicModel.VoteStart" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="VoteEnd" class="control-label"></label>
-                <input asp-for="VoteEnd" class="form-control" />
-                <span asp-validation-for="VoteEnd" class="text-danger"></span>
+                <label asp-for="topicModel.VoteEnd" class="control-label"></label>
+                <input asp-for="topicModel.VoteEnd" class="form-control" />
+                <span asp-validation-for="topicModel.VoteEnd" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="OptionA.Information" class="control-label"></label>
-                <input asp-for="OptionA.Information" class="form-control" />
-                <span asp-validation-for="OptionA.Information" class="text-danger"></span>
+                <label asp-for="topicModel.OptionA.Information" class="control-label"></label>
+                <input asp-for="topicModel.OptionA.Information" class="form-control" />
+                <span asp-validation-for="topicModel.OptionA.Information" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="OptionB.Information" class="control-label"></label>
-                <input asp-for="OptionB.Information" class="form-control" />
-                <span asp-validation-for="OptionB.Information" class="text-danger"></span>
+                <label asp-for="topicModel.OptionB.Information" class="control-label"></label>
+                <input asp-for="topicModel.OptionB.Information" class="form-control" />
+                <span asp-validation-for="topicModel.OptionB.Information" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
+
+            @{
+                List<User> listItems = new List<User>();
+                listItems.Add(new User
+                {
+                    Userid = 0
+
+                });
+                listItems.Add(new User
+                {
+                    Userid = 1
+                });
+                listItems.Add(new User
+                {
+                    Userid = 2
+                });
+            }
+
+            @Html.DropDownListFor(model => model.topicModel.OptionA, listItems, "-- Select Status --")
         </form>
     </div>
 </div>

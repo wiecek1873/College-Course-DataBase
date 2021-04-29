@@ -12,6 +12,7 @@ namespace Bazadanych.Controllers
 	public class HomeController : Controller
 	{
 		private readonly ILogger<HomeController> _logger;
+		private int sessionUserId = -1;
 
 		public HomeController(ILogger<HomeController> logger)
 		{
@@ -26,6 +27,37 @@ namespace Bazadanych.Controllers
 		public IActionResult Privacy()
 		{
 			return View();
+		}
+
+		public IActionResult ViewUsers()
+		{
+			ModelContext modelContext = new ModelContext();
+
+			var allUsersDB = modelContext.Users.ToList();
+
+			List<UserModel> allUsers = new List<UserModel>();
+
+			foreach (User user in allUsersDB)
+			{
+				allUsers.Add(new UserModel
+				{
+					UserID = (int)user.Userid,
+					FirstName = user.Firstname,
+					LastName = user.Lastname,
+					EmailAddress = user.Emailadress
+				});
+			}
+
+			allUsers = allUsers.OrderBy(x => x.UserID).ToList();
+
+			modelContext.Dispose();
+			return View(allUsers);
+		}
+
+		public IActionResult SignIn(int id)
+		{
+			sessionUserId = id;
+			return RedirectToAction("Index");
 		}
 
 		public IActionResult SignUp()
@@ -64,11 +96,18 @@ namespace Bazadanych.Controllers
 			return View();
 		}
 
+
 		public ActionResult CreateTopic()
 		{
-			ViewBag.Message = "Create topic";
+			ModelContext modelContext = new ModelContext();
+			var allUsersDB = modelContext.Users.ToList();
 
-			return View();
+			CreateTopicModel createTopicModel = new CreateTopicModel();
+			createTopicModel.topicModel = new TopicModel();
+			createTopicModel.userModels = allUsersDB;
+			modelContext.Dispose();
+
+			return View(createTopicModel);
 		}
 
 		[HttpPost]
@@ -179,7 +218,7 @@ namespace Bazadanych.Controllers
 
 			var options = modelContext.Options.ToList().FindAll(x => x.Optiongroupid == id);
 			options = options.OrderBy(x => x.Optionid).ToList();
-			if (submit == "OptionA")
+			if (submit == "Vote!")
 			{
 				options.First().Votes++;
 			}
@@ -226,6 +265,11 @@ namespace Bazadanych.Controllers
 			};
 
 			return View(topicModel);
+		}
+
+		public ActionResult NoPermission()
+		{
+			return View();
 		}
 
 		//public string Test()

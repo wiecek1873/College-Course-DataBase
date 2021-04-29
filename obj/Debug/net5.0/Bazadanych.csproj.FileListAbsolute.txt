@@ -188,3 +188,5 @@ C:\Users\wiece\Desktop\Sem6\BD\Program\obj\Debug\net5.0\Razor\Views\Home\SignUp.
 C:\Users\wiece\Desktop\Sem6\BD\Program\obj\Debug\net5.0\Razor\Views\Home\CreateTopic.cshtml.g.cs
 C:\Users\wiece\Desktop\Sem6\BD\Program\obj\Debug\net5.0\Razor\Views\Home\ViewTopics.cshtml.g.cs
 C:\Users\wiece\Desktop\Sem6\BD\Program\obj\Debug\net5.0\Razor\Views\Home\VoteTopic.cshtml.g.cs
+C:\Users\wiece\Desktop\Sem6\BD\Program\obj\Debug\net5.0\Razor\Views\Home\NoPermission.cshtml.g.cs
+C:\Users\wiece\Desktop\Sem6\BD\Program\obj\Debug\net5.0\Razor\Views\Home\ViewUsers.cshtml.g.cs
