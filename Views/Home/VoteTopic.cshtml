@@ -1,0 +1,50 @@
+﻿@model Bazadanych.Models.TopicModel
+
+@{
+    ViewData["Title"] = "VoteTopic";
+}
+
+<h1>VoteTopic</h1>
+
+<h4>TopicModel</h4>
+
+<div class="row">
+    <div class="col-sm-6">
+        @Html.DisplayFor(model => model.OptionA.Information)
+    </div>
+    <div class="col-sm-6">
+        @Html.DisplayFor(model => model.OptionB.Information)
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-6">
+        Vote!
+    </div>
+    <div class="col-sm-6">
+        Vote!
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-6">
+        @using (Html.BeginForm())
+        {
+            <input type="submit" name="submit" value="OptionA" />
+        }
+    </div>
+    <div class="col-sm-6">
+        @using (Html.BeginForm())
+        {
+            <input type="submit" name="submit" value="OptionB" />
+        }
+    </div>
+</div>
+
+<div>
+    <a asp-action="ViewTopics">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

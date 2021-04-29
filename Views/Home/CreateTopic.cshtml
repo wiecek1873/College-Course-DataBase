@@ -12,11 +12,6 @@
     <div class="col-md-4">
         <form asp-action="CreateTopic">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @*<div class="form-group">
-            <label asp-for="VoteTopicID" class="control-label"></label>
-            <input asp-for="VoteTopicID" class="form-control" />
-            <span asp-validation-for="VoteTopicID" class="text-danger"></span>
-        </div>*@
             <div class="form-group">
                 <label asp-for="Maininformation" class="control-label"></label>
                 <input asp-for="Maininformation" class="form-control" />
@@ -33,9 +28,14 @@
                 <span asp-validation-for="VoteEnd" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Option" class="control-label"></label>
-                <input asp-for="Option" class="form-control" />
-                <span asp-validation-for="Option" class="text-danger"></span>
+                <label asp-for="OptionA.Information" class="control-label"></label>
+                <input asp-for="OptionA.Information" class="form-control" />
+                <span asp-validation-for="OptionA.Information" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OptionB.Information" class="control-label"></label>
+                <input asp-for="OptionB.Information" class="form-control" />
+                <span asp-validation-for="OptionB.Information" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

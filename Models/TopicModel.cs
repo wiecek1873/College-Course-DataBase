@@ -25,6 +25,10 @@ namespace Bazadanych.Models
 		[Required(ErrorMessage = "Need time to stop.")]
 		public DateTime VoteEnd { get; set; }
 
-		public OptionModel Option { get; set; }
+		[Display(Name = "First option")]
+		public OptionModel OptionA { get; set; }
+
+		[Display(Name = "Second option")]
+		public OptionModel OptionB { get; set; }
 	}
 }

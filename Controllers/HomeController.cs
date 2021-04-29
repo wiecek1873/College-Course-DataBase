@@ -81,7 +81,12 @@ namespace Bazadanych.Controllers
 				decimal voteTimeID = 0;
 				decimal optionID = 0;
 
-				foreach(Votetime votetime in modelContext.Votetimes)
+				foreach (Votetopic votetopic in modelContext.Votetopics)
+				{
+					topicID++;
+				}
+
+				foreach (Votetime votetime in modelContext.Votetimes)
 				{
 					voteTimeID++;
 				}
@@ -93,7 +98,7 @@ namespace Bazadanych.Controllers
 					Votestoptime = model.VoteEnd
 				});
 
-				foreach(Option option in modelContext.Options)
+				foreach (Option option in modelContext.Options)
 				{
 					optionID++;
 				}
@@ -101,23 +106,27 @@ namespace Bazadanych.Controllers
 				modelContext.Options.Add(new Option
 				{
 					Optionid = optionID,
-					Optiongroupid = 1, //TODO sparametryzować
-					Information = "elo", //TODO sparametyzować
+					Optiongroupid = topicID, //TODO sparametryzować
+					Information = model.OptionA.Information, //TODO sparametyzować
 					Votes = 0
 				});
 
-				//foreach (Votetopic votetopic in modelContext.Votetopics)
-				//{
-				//	topicID++;
-				//}
+				optionID++;
+				modelContext.Options.Add(new Option
+				{
+					Optionid = optionID,
+					Optiongroupid = topicID, //TODO sparametryzować
+					Information = model.OptionB.Information, //TODO sparametyzować
+					Votes = 0
+				});
 
-				//modelContext.Votetopics.Add(new Votetopic
-				//{
-				//	Votetopicid = topicID,
-				//	Maininformation = model.Maininformation,
-				//	Votetimeid = voteTimeID,
-				//	Optiongroupid = optionGroupID
-				//});
+				modelContext.Votetopics.Add(new Votetopic
+				{
+					Votetopicid = topicID,
+					Maininformation = model.Maininformation,
+					Votetimeid = voteTimeID,
+					Optiongroupid = topicID
+				});
 
 				modelContext.SaveChanges();
 				modelContext.Dispose();
@@ -131,21 +140,92 @@ namespace Bazadanych.Controllers
 			ModelContext modelContext = new ModelContext();
 			ViewBag.Message = "Topics List";
 
-			var data = modelContext.Votetopics.ToList();
+			var allTopicsDB = modelContext.Votetopics.ToList();
+			var allTimesDB = modelContext.Votetimes.ToList();
+			var allOptionsDB = modelContext.Options.ToList();
 			List<TopicModel> allTopics = new List<TopicModel>();
 
-			foreach (var votetopic in data)
+			foreach (var votetopic in allTopicsDB)
 			{
+				List<Option> options = allOptionsDB.FindAll(x => x.Optiongroupid == votetopic.Optiongroupid).ToList();
+				options = options.OrderBy(x => x.Optionid).ToList();
+				OptionModel optionA = new OptionModel();
+				OptionModel optionB = new OptionModel();
+
+				optionA.Information = options.First().Information;
+				optionB.Information = options.Last().Information;
+
 				allTopics.Add(new TopicModel
 				{
 					VoteTopicID = (int)votetopic.Votetopicid,
 					Maininformation = votetopic.Maininformation,
+					VoteStart = allTimesDB.Find(x => x.Votetimeid == votetopic.Votetimeid).Votestarttime,
+					VoteEnd = allTimesDB.Find(x => x.Votetimeid == votetopic.Votetimeid).Votestoptime,
+					OptionA = optionA,
+					OptionB = optionB
 				});
 			}
 
 			allTopics = allTopics.OrderBy(x => x.VoteTopicID).ToList();
 
+			modelContext.Dispose();
 			return View(allTopics);
+		}
+
+		[HttpPost]
+		public ActionResult VoteTopic(string submit, int id)
+		{
+			ModelContext modelContext = new ModelContext();
+
+			var options = modelContext.Options.ToList().FindAll(x => x.Optiongroupid == id);
+			options = options.OrderBy(x => x.Optionid).ToList();
+			if (submit == "OptionA")
+			{
+				options.First().Votes++;
+			}
+			else
+			{
+				options.Last().Votes++;
+			}
+
+			modelContext.SaveChanges();
+			modelContext.Dispose();
+
+			return View();
+		}
+
+
+		public ActionResult VoteTopic(int id)
+		{
+			ViewBag.Message = "Vote on topic";
+
+			ModelContext modelContext = new ModelContext();
+
+			var allTopicsDB = modelContext.Votetopics.ToList();
+			var allTimesDB = modelContext.Votetimes.ToList();
+			var allOptionsDB = modelContext.Options.ToList();
+
+			var topic = allTopicsDB.Find(x => x.Votetopicid == id);
+
+			List<Option> options = allOptionsDB.FindAll(x => x.Optiongroupid == topic.Optiongroupid).ToList();
+			options = options.OrderBy(x => x.Optionid).ToList();
+			OptionModel optionA = new OptionModel();
+			OptionModel optionB = new OptionModel();
+
+			optionA.Information = options.First().Information;
+			optionB.Information = options.Last().Information;
+
+			TopicModel topicModel = new TopicModel
+			{
+				VoteTopicID = (int)topic.Votetopicid,
+				Maininformation = topic.Maininformation,
+				VoteStart = allTimesDB.Find(x => x.Votetimeid == topic.Votetimeid).Votestarttime,
+				VoteEnd = allTimesDB.Find(x => x.Votetimeid == topic.Votetimeid).Votestoptime,
+				OptionA = optionA,
+				OptionB = optionB
+			};
+
+			return View(topicModel);
 		}
 
 		//public string Test()
