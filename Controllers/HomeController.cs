@@ -250,6 +250,9 @@ namespace Bazadanych.Controllers
 		{
 			ModelContext modelContext = new ModelContext();
 
+			HttpContext.Session.TryGetValue("sessionUserId", out Byte[] bytes);
+			sessionUserId = BitConverter.ToInt32(bytes);
+
 			var options = modelContext.Options.ToList().FindAll(x => x.Optiongroupid == id);
 			options = options.OrderBy(x => x.Optionid).ToList();
 			if (submit == "Vote!")
@@ -261,10 +264,18 @@ namespace Bazadanych.Controllers
 				options.Last().Votes++;
 			}
 
+			foreach(var permission in modelContext.Permissions)
+			{
+				if(permission.Usersid == sessionUserId && permission.Topicsid == id)
+				{
+					permission.Canvote = 0;
+				}
+			}
+
 			modelContext.SaveChanges();
 			modelContext.Dispose();
 
-			return View();
+			return RedirectToAction("ViewTopics");
 		}
 
 
