@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Providers.Entities;
+using System.Web;
 
 namespace Bazadanych.Controllers
 {
@@ -20,11 +22,6 @@ namespace Bazadanych.Controllers
 		}
 
 		public IActionResult Index()
-		{
-			return View();
-		}
-
-		public IActionResult Privacy()
 		{
 			return View();
 		}
@@ -56,7 +53,7 @@ namespace Bazadanych.Controllers
 
 		public IActionResult SignIn(int id)
 		{
-			sessionUserId = id;
+			HttpContext.Session.Set("sessionUserId",BitConverter.GetBytes(id));
 			return RedirectToAction("Index");
 		}
 
@@ -99,25 +96,20 @@ namespace Bazadanych.Controllers
 
 		public ActionResult CreateTopic()
 		{
-			ModelContext modelContext = new ModelContext();
-			var allUsersDB = modelContext.Users.ToList();
-
 			CreateTopicModel createTopicModel = new CreateTopicModel();
 			createTopicModel.topicModel = new TopicModel();
-			createTopicModel.userModels = allUsersDB;
-			modelContext.Dispose();
 
 			return View(createTopicModel);
 		}
 
 		[HttpPost]
-		public ActionResult CreateTopic(TopicModel model)
+		public ActionResult CreateTopic(CreateTopicModel model)
 		{
 			if (ModelState.IsValid)
 			{
 				ModelContext modelContext = new ModelContext();
 				decimal topicID = 0;
-				decimal voteTimeID = 0;
+				decimal voteTimeID;
 				decimal optionID = 0;
 
 				foreach (Votetopic votetopic in modelContext.Votetopics)
@@ -125,16 +117,13 @@ namespace Bazadanych.Controllers
 					topicID++;
 				}
 
-				foreach (Votetime votetime in modelContext.Votetimes)
-				{
-					voteTimeID++;
-				}
+				voteTimeID = topicID;
 
 				modelContext.Votetimes.Add(new Votetime
 				{
 					Votetimeid = voteTimeID,
-					Votestarttime = model.VoteStart,
-					Votestoptime = model.VoteEnd
+					Votestarttime = model.topicModel.VoteStart,
+					Votestoptime = model.topicModel.VoteEnd
 				});
 
 				foreach (Option option in modelContext.Options)
@@ -145,8 +134,8 @@ namespace Bazadanych.Controllers
 				modelContext.Options.Add(new Option
 				{
 					Optionid = optionID,
-					Optiongroupid = topicID, //TODO sparametryzować
-					Information = model.OptionA.Information, //TODO sparametyzować
+					Optiongroupid = topicID,
+					Information = model.topicModel.OptionA.Information,
 					Votes = 0
 				});
 
@@ -154,22 +143,49 @@ namespace Bazadanych.Controllers
 				modelContext.Options.Add(new Option
 				{
 					Optionid = optionID,
-					Optiongroupid = topicID, //TODO sparametryzować
-					Information = model.OptionB.Information, //TODO sparametyzować
+					Optiongroupid = topicID,
+					Information = model.topicModel.OptionB.Information,
 					Votes = 0
 				});
 
 				modelContext.Votetopics.Add(new Votetopic
 				{
 					Votetopicid = topicID,
-					Maininformation = model.Maininformation,
-					Votetimeid = voteTimeID,
+					Maininformation = model.topicModel.Maininformation,
+					Votetimeid = topicID,
 					Optiongroupid = topicID
 				});
 
+				List<string> users = model.users.Split(' ').ToList();
+				List<User> allUsersDB = modelContext.Users.ToList();
+
+				decimal permissionID = 0;
+				foreach (var permission in modelContext.Permissions.ToList())
+				{
+					permissionID++;
+				}
+
+				foreach (var user in users)
+				{
+					foreach (var userDB in allUsersDB)
+					{
+						if (user == userDB.Emailadress)
+						{
+							modelContext.Permissions.Add(new Permission
+							{
+								Permissionid = permissionID,
+								Usersid = userDB.Userid,
+								Topicsid = topicID,
+								Canvote = 1
+							});
+							permissionID++;
+						}
+					}
+				}
+
 				modelContext.SaveChanges();
 				modelContext.Dispose();
-				return RedirectToAction("Index");
+				return RedirectToAction("ViewTopics");
 			}
 			return View();
 		}
@@ -206,9 +222,27 @@ namespace Bazadanych.Controllers
 			}
 
 			allTopics = allTopics.OrderBy(x => x.VoteTopicID).ToList();
+			List<TopicModel> topicToView = new List<TopicModel>();
+
+			HttpContext.Session.TryGetValue("sessionUserId", out Byte[] bytes);
+			if (bytes != null)
+			{
+				sessionUserId = BitConverter.ToInt32(bytes);
+
+				foreach (var permission in modelContext.Permissions)
+				{
+					for (int i = 0; i < allTopics.Count; i++)
+					{
+						if (permission.Usersid == sessionUserId && permission.Topicsid == allTopics[i].VoteTopicID && permission.Canvote == 1)
+							topicToView.Add(allTopics[i]);
+					}
+				}
+			}
+			else
+				topicToView = allTopics;
 
 			modelContext.Dispose();
-			return View(allTopics);
+			return View(topicToView);
 		}
 
 		[HttpPost]

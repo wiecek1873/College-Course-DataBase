@@ -94,7 +94,6 @@ C:\Users\wiece\Desktop\Sem6\BD\Program\obj\Debug\net5.0\Bazadanych.TagHelpers.in
 C:\Users\wiece\Desktop\Sem6\BD\Program\obj\Debug\net5.0\Bazadanych.TagHelpers.output.cache
 C:\Users\wiece\Desktop\Sem6\BD\Program\obj\Debug\net5.0\Bazadanych.RazorCoreGenerate.cache
 C:\Users\wiece\Desktop\Sem6\BD\Program\obj\Debug\net5.0\Razor\Views\Home\Index.cshtml.g.cs
-C:\Users\wiece\Desktop\Sem6\BD\Program\obj\Debug\net5.0\Razor\Views\Home\Privacy.cshtml.g.cs
 C:\Users\wiece\Desktop\Sem6\BD\Program\obj\Debug\net5.0\Razor\Views\Shared\Error.cshtml.g.cs
 C:\Users\wiece\Desktop\Sem6\BD\Program\obj\Debug\net5.0\Razor\Views\Shared\_Layout.cshtml.g.cs
 C:\Users\wiece\Desktop\Sem6\BD\Program\obj\Debug\net5.0\Razor\Views\Shared\_ValidationScriptsPartial.cshtml.g.cs
@@ -190,3 +189,8 @@ C:\Users\wiece\Desktop\Sem6\BD\Program\obj\Debug\net5.0\Razor\Views\Home\ViewTop
 C:\Users\wiece\Desktop\Sem6\BD\Program\obj\Debug\net5.0\Razor\Views\Home\VoteTopic.cshtml.g.cs
 C:\Users\wiece\Desktop\Sem6\BD\Program\obj\Debug\net5.0\Razor\Views\Home\NoPermission.cshtml.g.cs
 C:\Users\wiece\Desktop\Sem6\BD\Program\obj\Debug\net5.0\Razor\Views\Home\ViewUsers.cshtml.g.cs
+C:\Users\wiece\Desktop\Sem6\BD\Program\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\wiece\Desktop\Sem6\BD\Program\bin\Debug\net5.0\System.Diagnostics.DiagnosticSource.dll
+C:\Users\wiece\Desktop\Sem6\BD\Program\bin\Debug\net5.0\EntityFramework.SqlServer.dll
+C:\Users\wiece\Desktop\Sem6\BD\Program\bin\Debug\net5.0\EntityFramework.dll
+C:\Users\wiece\Desktop\Sem6\BD\Program\bin\Debug\net5.0\System.Web.Providers.dll

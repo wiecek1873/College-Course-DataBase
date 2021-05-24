@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace Bazadanych.Models
 {
@@ -9,6 +10,7 @@ namespace Bazadanych.Models
 	{
 		public TopicModel topicModel { get; set; }
 
-		public IEnumerable<User> userModels { get; set; }
+		[Display(Name = "User's emails")]
+		public string users { get; set; }
 	}
 }

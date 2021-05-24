@@ -10,5 +10,6 @@ namespace Bazadanych
         public decimal Usersid { get; set; }
         public decimal Topicsid { get; set; }
         public decimal Canvote { get; set; }
+        public decimal Permissionid { get; set; }
     }
 }
