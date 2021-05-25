@@ -233,7 +233,7 @@ namespace Bazadanych.Controllers
 				{
 					for (int i = 0; i < allTopics.Count; i++)
 					{
-						if (permission.Usersid == sessionUserId && permission.Topicsid == allTopics[i].VoteTopicID && permission.Canvote == 1)
+						if (permission.Usersid == sessionUserId && permission.Topicsid == allTopics[i].VoteTopicID && permission.Canvote == 1 && DateTime.Compare(allTopics[i].VoteStart,DateTime.Now) < 0)
 							topicToView.Add(allTopics[i]);
 					}
 				}
@@ -243,6 +243,69 @@ namespace Bazadanych.Controllers
 
 			modelContext.Dispose();
 			return View(topicToView);
+		}
+
+		public ActionResult ViewResults()
+		{
+			ModelContext modelContext = new ModelContext();
+			var allTopicsDB = modelContext.Votetopics.ToList();
+			var allTimesDB = modelContext.Votetimes.ToList();
+			var allOptionsDB = modelContext.Options.ToList();
+			List<ResultModel> resultModels = new List<ResultModel>();
+
+			HttpContext.Session.TryGetValue("sessionUserId", out Byte[] bytes);
+			if(bytes != null)
+			{
+				sessionUserId = BitConverter.ToInt32(bytes);
+				foreach(var permission in modelContext.Permissions.ToList())
+				{
+					if(permission.Usersid == sessionUserId)
+					{
+						foreach(var votetime in allTimesDB)
+						{
+							if(permission.Topicsid == votetime.Votetimeid)
+							{
+								if(DateTime.Compare(votetime.Votestoptime,DateTime.Now) < 0)
+								{
+									var model = new ResultModel();
+									foreach(var topic in allTopicsDB)
+									{
+										if(topic.Votetopicid == permission.Topicsid)
+										{
+											model.Maininformation = topic.Maininformation;
+										}
+									}
+									foreach(var option in allOptionsDB)
+									{
+										if(option.Optiongroupid == permission.Topicsid)
+										{
+											if(model.OptionA == null)
+											{
+												model.OptionA = new OptionModel
+												{
+													Information = option.Information,
+													Votes = (int)option.Votes
+												};
+											}
+											else
+											{
+												model.OptionB = new OptionModel
+												{
+													Information = option.Information,
+													Votes = (int)option.Votes
+												};
+											}
+										}
+									}
+									resultModels.Add(model);
+								}
+							}
+						}
+					}
+				}
+			}
+
+			return View(resultModels);
 		}
 
 		[HttpPost]

@@ -194,3 +194,4 @@ C:\Users\wiece\Desktop\Sem6\BD\Program\bin\Debug\net5.0\System.Diagnostics.Diagn
 C:\Users\wiece\Desktop\Sem6\BD\Program\bin\Debug\net5.0\EntityFramework.SqlServer.dll
 C:\Users\wiece\Desktop\Sem6\BD\Program\bin\Debug\net5.0\EntityFramework.dll
 C:\Users\wiece\Desktop\Sem6\BD\Program\bin\Debug\net5.0\System.Web.Providers.dll
+C:\Users\wiece\Desktop\Sem6\BD\Program\obj\Debug\net5.0\Razor\Views\Home\ViewResults.cshtml.g.cs

@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Bazadanych.Models.ResultModel>
+
+@{
+    ViewData["Title"] = "ViewResults";
+}
+
+<h1>Results</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Maininformation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OptionA.Information)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OptionA.Votes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OptionB.Information)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OptionB.Votes)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Maininformation)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OptionA.Information)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OptionA.Votes)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OptionB.Information)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OptionB.Votes)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
