@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Bazadanych.Models.TopicModel>
+
+@{
+    ViewData["Title"] = "ViewAllTopics";
+}
+
+<h1>All topics</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Maininformation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VoteStart)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VoteEnd)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OptionA)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OptionB)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Maininformation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VoteStart)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VoteEnd)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OptionA.Information)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OptionB.Information)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

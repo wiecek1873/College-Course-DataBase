@@ -245,6 +245,61 @@ namespace Bazadanych.Controllers
 			return View(topicToView);
 		}
 
+		public ActionResult ViewAllTopics()
+		{
+			ModelContext modelContext = new ModelContext();
+			ViewBag.Message = "Topics List";
+
+			var allTopicsDB = modelContext.Votetopics.ToList();
+			var allTimesDB = modelContext.Votetimes.ToList();
+			var allOptionsDB = modelContext.Options.ToList();
+			List<TopicModel> allTopics = new List<TopicModel>();
+
+			foreach (var votetopic in allTopicsDB)
+			{
+				List<Option> options = allOptionsDB.FindAll(x => x.Optiongroupid == votetopic.Optiongroupid).ToList();
+				options = options.OrderBy(x => x.Optionid).ToList();
+				OptionModel optionA = new OptionModel();
+				OptionModel optionB = new OptionModel();
+
+				optionA.Information = options.First().Information;
+				optionB.Information = options.Last().Information;
+
+				allTopics.Add(new TopicModel
+				{
+					VoteTopicID = (int)votetopic.Votetopicid,
+					Maininformation = votetopic.Maininformation,
+					VoteStart = allTimesDB.Find(x => x.Votetimeid == votetopic.Votetimeid).Votestarttime,
+					VoteEnd = allTimesDB.Find(x => x.Votetimeid == votetopic.Votetimeid).Votestoptime,
+					OptionA = optionA,
+					OptionB = optionB
+				});
+			}
+
+			allTopics = allTopics.OrderBy(x => x.VoteTopicID).ToList();
+			List<TopicModel> topicToView = new List<TopicModel>();
+
+			HttpContext.Session.TryGetValue("sessionUserId", out Byte[] bytes);
+			if (bytes != null)
+			{
+				sessionUserId = BitConverter.ToInt32(bytes);
+
+				foreach (var permission in modelContext.Permissions)
+				{
+					for (int i = 0; i < allTopics.Count; i++)
+					{
+						if (permission.Usersid == sessionUserId && permission.Topicsid == allTopics[i].VoteTopicID)
+							topicToView.Add(allTopics[i]);
+					}
+				}
+			}
+			else
+				topicToView = allTopics;
+
+			modelContext.Dispose();
+			return View(topicToView);
+		}
+
 		public ActionResult ViewResults()
 		{
 			ModelContext modelContext = new ModelContext();

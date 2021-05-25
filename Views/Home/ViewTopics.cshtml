@@ -4,7 +4,7 @@
     ViewData["Title"] = "ViewTopics";
 }
 
-<h1>ViewTopics</h1>
+<h1>Pending topics</h1>
 
 <p>
     <a asp-action="CreateTopic">Create new topic!</a>
@@ -12,9 +12,6 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.VoteTopicID)
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Maininformation)
             </th>
@@ -37,9 +34,6 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.VoteTopicID)
-                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Maininformation)
                 </td>
